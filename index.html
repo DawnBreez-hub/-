@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
@@ -69,7 +69,7 @@
       {
         id: "gongmin",
         category: "政治生活",
-        title: "公民权利",
+        title: "/index.html",
         content: "公民享有广泛的政治权利和自由，依法行使选举权、言论自由、监督权等，是社会主义民主政治的体现。"
       },
       {
@@ -96,23 +96,73 @@
       }
     }
 
-    window.onload = () => {
-      const container = document.getElementById("templateContainer");
-      templates.forEach(t => {
-        const div = document.createElement("div");
-        div.className = "template";
-        div.id = t.id;
-        div.innerHTML = `<h2>${t.title}</h2><p>${t.content}</p>`;
-        container.appendChild(div);
-      });
-    };
+window.onload = () => {
+  const container = document.getElementById("templateContainer");
+  const indexContainer = document.getElementById("indexContainer");
+
+  const grouped = {};
+
+  // 分组：按 category 分类
+  templates.forEach(t => {
+    if (!grouped[t.category]) grouped[t.category] = [];
+    grouped[t.category].push(t);
+  });
+
+  // 构建索引导航
+  for (const category in grouped) {
+    const catDiv = document.createElement("div");
+    catDiv.innerHTML = `<strong>${category}</strong>`;
+    grouped[category].forEach(t => {
+      const link = document.createElement("a");
+      link.href = `#${t.id}`;
+      link.textContent = `・${t.title}`;
+      link.style.display = "block";
+      link.style.marginLeft = "1rem";
+      link.style.color = "#007bff";
+      link.style.textDecoration = "none";
+      link.style.padding = "0.2rem 0";
+      catDiv.appendChild(link);
+    });
+    indexContainer.appendChild(catDiv);
+  }
+
+  // 构建模板内容区域
+  templates.forEach(t => {
+    const div = document.createElement("div");
+    div.className = "template";
+    div.id = t.id;
+    div.innerHTML = `<h2>${t.title}</h2><p>${t.content}</p>`;
+    container.appendChild(div);
+  });
+};
   </script>
 </head>
 <body>
   <h1>政治大题模板查询</h1>
+
   <input type="text" id="searchInput" placeholder="输入关键词，如“政府”" />
   <button onclick="searchTemplates()">🔍 搜索模板</button>
 
-  <div id="templateContainer"></div>
+  <!-- 模板索引导航 -->
+  <details style="margin-top: 1rem;">
+    <summary style="font-weight: bold; cursor: pointer;">📚 模板索引（点击展开）</summary>
+    <div id="indexContainer" style="margin-top: 0.5rem; padding-left: 1rem;"></div>
+  </details>
+
+  <!-- 模板内容展示区 -->
+  <div id="templateContainer" style="margin-top: 1.5rem;"></div>
 </body>
+</html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
 </html>
