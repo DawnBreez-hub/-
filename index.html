@@ -1,188 +1,37 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>高中政治大题模板查询</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background: #f9fafb;
-      padding: 1rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-    input, textarea, select, button {
-      font-size: 1rem;
-      padding: 0.5rem;
-      margin: 0.25rem 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button {
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .template {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      padding: 1rem;
-      margin-top: 1rem;
-    }
-    .template button {
-      width: auto;
-      margin-right: 0.5rem;
-      background-color: #6c757d;
-    }
-    .template button:hover {
-      background-color: #495057;
-    }
-    .highlight {
-      background: yellow;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 3rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中政治大题模板查询</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>高中政治大题答题模板</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="输入关键词搜索模板...">
+            <button id="searchButton">搜索</button>
+        </div>
+    </header>
 
-  <h1>高中政治大题模板查询</h1>
+    <nav id="index-navigation">
+        <h2>关键词索引</h2>
+        <div id="keywordIndex">
+            </div>
+        <h2>模块分类</h2>
+        <div id="categoryIndex">
+            </div>
+    </nav>
 
-  <input id="searchInput" placeholder="输入关键词搜索..." />
-  <button onclick="searchTemplates()">🔍 搜索</button>
+    <main id="resultsContainer">
+        <p>请输入关键词搜索，或点击左侧索引查看。</p>
+    </main>
 
-  <hr>
+    <footer>
+        <p>&copy; 2025 @Dawn_BreeZ</p>
+    </footer>
 
-  <h2>➕ 添加新模板</h2>
-  <input id="newCategory" placeholder="所属模块（如 政治生活）" />
-  <input id="newTitle" placeholder="模板标题（如 政府职能）" />
-  <textarea id="newContent" rows="4" placeholder="模板内容..."></textarea>
-  <button onclick="addTemplate()">✅ 添加模板</button>
-
-  <hr>
-
-  <h2>📌 模板索引</h2>
-  <div id="indexContainer"></div>
-
-  <hr>
-
-  <h2>📚 模板内容</h2>
-  <div id="templateContainer"></div>
-
-  <footer>
-    由 <strong>一个高中生</strong> 独立开发设计。<br>
-    功能涵盖模板查询、增删改查、浏览器本地保存。<br>
-    如需交流学习或获取源码，请联系我。
-    邮箱：gzdzjkh2526@gmail.com
-  </footer>
-
-  <script>
-    // 默认模板
-    const defaultTemplates = [
-      {
-        id: "zhengfu",
-        category: "政治生活",
-        title: "政府职能",
-        content: "政府要履行好组织经济、保障民生、维护稳定、服务社会等基本职能，依法行政，做到权为民所用。"
-      },
-      {
-        id: "gongmin",
-        category: "政治生活",
-        title: "公民权利",
-        content: "公民享有广泛的政治权利和自由，依法行使选举权、言论自由、监督权等，是社会主义民主政治的体现。"
-      },
-      {
-        id: "wuzhi",
-        category: "哲学原理",
-        title: "物质与意识",
-        content: "物质是世界的本原，意识是对客观存在的主观反映，要求我们坚持实事求是、一切从实际出发。"
-      }
-    ];
-
-    // 获取所有模板
-    function getTemplates() {
-      const saved = JSON.parse(localStorage.getItem("userTemplates") || "[]");
-      return [...defaultTemplates, ...saved];
-    }
-
-    // 搜索
-    function searchTemplates() {
-      const keyword = document.getElementById("searchInput").value.trim();
-      if (!keyword) return;
-      const match = getTemplates().find(t =>
-        t.title.includes(keyword) || t.content.includes(keyword)
-      );
-      if (match) {
-        location.hash = `#${match.id}`;
-      } else {
-        alert("未找到相关模板。");
-      }
-    }
-
-    // 添加模板
-    function addTemplate() {
-      const category = document.getElementById("newCategory").value.trim();
-      const title = document.getElementById("newTitle").value.trim();
-      const content = document.getElementById("newContent").value.trim();
-      if (!category || !title || !content) {
-        alert("请填写完整信息。");
-        return;
-      }
-      const id = "user_" + Date.now();
-      const newTemplate = { id, category, title, content };
-      const saved = JSON.parse(localStorage.getItem("userTemplates") || "[]");
-      saved.push(newTemplate);
-      localStorage.setItem("userTemplates", JSON.stringify(saved));
-      document.getElementById("newCategory").value = "";
-      document.getElementById("newTitle").value = "";
-      document.getElementById("newContent").value = "";
-      renderTemplates(getTemplates());
-    }
-
-    // 删除模板
-    function deleteTemplate(id) {
-      const saved = JSON.parse(localStorage.getItem("userTemplates") || "[]");
-      const updated = saved.filter(t => t.id !== id);
-      localStorage.setItem("userTemplates", JSON.stringify(updated));
-      renderTemplates(getTemplates());
-    }
-
-    // 编辑相关
-    let editingId = null;
-
-    function startEdit(id) {
-      editingId = id;
-      renderTemplates(getTemplates());
-    }
-
-    function cancelEdit() {
-      editingId = null;
-      renderTemplates(getTemplates());
-    }
-
-    function saveEdit(id) {
-      const category = document.getElementById("editCategory").value.trim();
-      const title = document.getElementById("editTitle").value.trim();
-      const content = document.getElementById("editContent").value.trim();
-      if (!category || !title || !content) {
-        alert("请填写完整信息。");
-        return;
-      }
-      const saved = JSON.parse(localStorage.getItem("userTemplates") || "[]");
-      const updated = saved.map(t => t.id === id ? { ...t, category, title, content } : t);
-      localStora
+    <script src="script.js"></script>
+    </body>
+</html>
